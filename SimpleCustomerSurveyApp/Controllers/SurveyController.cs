@@ -2,14 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DomainLayer.SurveyAggregate;
 using Microsoft.AspNetCore.Mvc;
 
 namespace SimpleCustomerSurveyApp.Controllers
 {
+
     [Route("api/[controller]")]
-    public class SampleDataController : Controller
+    public class SurveyController : Controller
     {
-        private static string[] Summaries = new[]
+
+        private readonly ISurveryRepository _surveyRepository;
+
+        public SurveyController(ISurveryRepository surveyRepository)
+        {
+            _surveyRepository = surveyRepository;
+        }
+
+        /*private static string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
@@ -39,6 +49,37 @@ namespace SimpleCustomerSurveyApp.Controllers
                     return 32 + (int)(TemperatureC / 0.5556);
                 }
             }
+        }*/
+
+        [HttpGet("{surveyId:int}")]
+        public async Task<IActionResult> GetSurveyQuestion(int surveyId)
+        {
+            try
+            {
+                var survey = await _surveyRepository.GetAsync(surveyId);
+
+                return Ok(survey);
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
         }
+
+        [HttpPost("submit-survey")]
+        public async Task<IActionResult> SubmitSurvey([FromBody] SurveyAnswersDTO surveyAnwers)
+        {
+            try
+            {
+                //await _surveyService.PostAnswers();
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+
     }
 }
