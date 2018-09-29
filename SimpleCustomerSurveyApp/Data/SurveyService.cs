@@ -1,5 +1,6 @@
 ﻿using DomainLayer.Entities;
-using InfrastructureLayer.DBContexts;
+using DomainLayer.SurveyAggregate;
+using InfrastructureLayer.MongoDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +9,22 @@ using System.Threading.Tasks;
 
 namespace SimpleCustomerSurveyApp.Data
 {
-    public class DbInitializer
+    public interface ISurveyService
     {
-        public DbInitializer()
-        {
+        Task CreateSurvey();
+        Task<Survey> GetSurvey(int id);
+    }
 
+    public class SurveyService : ISurveyService
+    {
+        private readonly ISurveryRepository _surveryRepository;
+
+        public SurveyService(ISurveryRepository surveryRepository)
+        {
+            _surveryRepository = surveryRepository;
         }
-        public async Task Initialize(SurveyContext context)
+
+        public async Task CreateSurvey()
         {
             //Create a new Survey
             var survey = new Survey("Customer Satisfaction Survey");
@@ -30,8 +40,12 @@ namespace SimpleCustomerSurveyApp.Data
             );
 
             //Persist to database
-            context.Add(survey);
-            await context.SaveChangesAsync();
+            await _surveryRepository.SaveAsync(survey);
+        }
+
+        public async Task<Survey> GetSurvey(int id)
+        {
+            return await _surveryRepository.GetAsync(id);
         }
     }
 }

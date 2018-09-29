@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,14 @@ namespace DomainLayer.SurveyAggregate.QuestionTypes
 
             _answers = new List<int>();
             Scale = scale;
+        }
+
+        public void AddScaleAnswer(int answer)
+        {
+            if(answer>Scale || answer<Scale)
+                throw new Exception("Scale anser must be within acceptable");
+
+            _answers.Add(answer);
         }
     }
 }

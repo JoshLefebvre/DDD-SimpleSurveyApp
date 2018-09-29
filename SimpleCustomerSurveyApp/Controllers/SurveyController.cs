@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DomainLayer.SurveyAggregate;
 using Microsoft.AspNetCore.Mvc;
+using SimpleCustomerSurveyApp.Data;
 
 namespace SimpleCustomerSurveyApp.Controllers
 {
@@ -12,12 +13,14 @@ namespace SimpleCustomerSurveyApp.Controllers
     public class SurveyController : Controller
     {
 
-        private readonly ISurveryRepository _surveyRepository;
+        private readonly ISurveyService _surveyService;
 
-        public SurveyController(ISurveryRepository surveyRepository)
+        public SurveyController(ISurveyService surveyService)
         {
-            _surveyRepository = surveyRepository;
+            _surveyService = surveyService;
         }
+
+
 
         /*private static string[] Summaries = new[]
         {
@@ -56,7 +59,8 @@ namespace SimpleCustomerSurveyApp.Controllers
         {
             try
             {
-                var survey = await _surveyRepository.GetAsync(surveyId);
+                
+                var survey = await _surveyService.GetSurvey(surveyId);
 
                 return Ok(survey);
             }
@@ -80,6 +84,19 @@ namespace SimpleCustomerSurveyApp.Controllers
             }
         }
 
+        [HttpPost("create-survey")]
+        public async Task<IActionResult> CreateSurvey()
+        {
+            try
+            {
+                await _surveyService.CreateSurvey();
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
 
     }
 }

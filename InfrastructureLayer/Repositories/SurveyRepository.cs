@@ -1,6 +1,8 @@
 ﻿using DomainLayer.Entities;
 using DomainLayer.SurveyAggregate;
-using InfrastructureLayer.DBContexts;
+using InfrastructureLayer.MongoDB;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,21 +13,36 @@ namespace InfrastructureLayer
     {
         private readonly SurveyContext _dbContext;
 
-        public SurveyRepository(SurveyContext dbContext)
+        public SurveyRepository(/*IOptions<Settings> settings*/)
         {
-            _dbContext = dbContext;
+            _dbContext = new SurveyContext(/*settings*/);
         }
 
         public async Task SaveAsync(Survey survey)
         {
-            _dbContext.Surveys.Add(survey);
-            _dbContext.SaveChanges();
+            try
+            {
+                await _dbContext.Surveys.InsertOneAsync(survey);
+            }
+            catch (Exception ex)
+            {
+                // log or manage the exception
+                throw ex;
+            }
         }
 
         public async Task<Survey> GetAsync(int id)
         {
-            //Hack: For demo purposes we only have 1 survey
-            return _dbContext.Surveys.First();
+            try
+            {
+                return _dbContext.Surveys.Find(_ => true).FirstOrDefault();
+                //return await _dbContext.Surveys.Find(s => s.Id == id).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                // log or manage the exception
+                throw ex;
+            }
         }
     }
 }

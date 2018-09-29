@@ -1,6 +1,6 @@
 using DomainLayer.SurveyAggregate;
 using InfrastructureLayer;
-using InfrastructureLayer.DBContexts;
+using InfrastructureLayer.MongoDB;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SimpleCustomerSurveyApp.Data;
 using System.Reflection;
 
 namespace SimpleCustomerSurveyApp
@@ -25,18 +26,15 @@ namespace SimpleCustomerSurveyApp
         public void ConfigureServices(IServiceCollection services)
         {
             //Add SQL Server
-            services.AddDbContext<SurveyContext>(options =>
+            /*services.AddDbContext<SurveyContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                     sqlServerOptionsAction: sqlOptions =>
                     {
                         sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                        /*sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);*/
+                        /*sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
                     }
                 )
-            );
-
-            //Repositories
-            services.AddTransient<ISurveryRepository, SurveyRepository>();
+            );*/
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
@@ -45,6 +43,13 @@ namespace SimpleCustomerSurveyApp
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+
+            //Repositories
+            services.AddTransient<ISurveryRepository, SurveyRepository>();
+
+            //Services
+            services.AddTransient<ISurveyService, SurveyService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -62,6 +67,7 @@ namespace SimpleCustomerSurveyApp
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
 
             app.UseMvc(routes =>
             {

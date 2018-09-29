@@ -1,6 +1,7 @@
 ﻿using DomainLayer.SeedWork;
 using DomainLayer.SurveyAggregate;
 using DomainLayer.SurveyAggregate.QuestionTypes;
+using MongoDB.Bson.Serialization.Attributes;
 using System.Collections.Generic;
 
 namespace DomainLayer.Entities
@@ -11,8 +12,9 @@ namespace DomainLayer.Entities
 
         // Keeping SurveyQuestions private so that new questions cannot be added from "outside the AggregateRoot"
         // but only through the method AddSurveyQuestion() methods which will often include behaviour.
-        private readonly List<SurveyQuestion> _surveyQuestions;
-        public IReadOnlyCollection<SurveyQuestion> OrderItems => _surveyQuestions;
+        [BsonElement("Questions")]
+        public List<SurveyQuestion> _surveyQuestions;
+        public IReadOnlyCollection<SurveyQuestion> SurveyQuestions => _surveyQuestions;
 
         public Survey()
         {
