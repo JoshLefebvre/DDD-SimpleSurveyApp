@@ -9,7 +9,7 @@ import { Router } from "@angular/router";
 })
 export class TakeSurveyComponent {
 
-  private survey: Survey;
+  public survey: Survey;
   public questionTypes: QuestionTypes;
   private baseUrl: string;
 

@@ -1,0 +1,18 @@
+version: '3.4'
+
+services:
+  nosql.data:
+    image: mongo
+
+  survey.api:
+    image: surveyapp
+    build:
+      context: .
+      dockerfile: SimpleCustomerSurveyApp/Dockerfile
+    ports:
+     - "50620:80"    
+     - "44385:443"    
+    depends_on:
+      - nosql.data
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
