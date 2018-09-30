@@ -18,7 +18,7 @@ namespace InfrastructureLayer
             _dbContext = new SurveyContext(/*settings*/);
         }
 
-        public async Task SaveAsync(Survey survey)
+        public async Task CreateAsync(Survey survey)
         {
             try
             {
@@ -31,12 +31,25 @@ namespace InfrastructureLayer
             }
         }
 
-        public async Task<Survey> GetAsync(int id)
+        public async Task<Survey> GetAsync(string id)
         {
             try
             {
                 return _dbContext.Surveys.Find(_ => true).FirstOrDefault();
-                //return await _dbContext.Surveys.Find(s => s.Id == id).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                // log or manage the exception
+                throw ex;
+            }
+        }
+
+        public async Task UpdateAsync(Survey survey)
+        {
+            try
+            {
+                var filter = Builders<Survey>.Filter.Eq(s => s.EntityId, survey.EntityId);
+                await _dbContext.Surveys.ReplaceOneAsync(filter, survey);
             }
             catch (Exception ex)
             {

@@ -1,0 +1,23 @@
+<h1>Results for</h1>
+
+<p *ngIf="!survey"><em>Loading...</em></p>
+
+<div *ngIf="survey">
+  <table class='table'>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Temp. (C)</th>
+        <th>Temp. (F)</th>
+        <th>Summary</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let question of survey.surveyQuestions">
+        <td>{{ question.questionText }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button (click)="createSurvey()">Create a new Survey</button>
+</div>

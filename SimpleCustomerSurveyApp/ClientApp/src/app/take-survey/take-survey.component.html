@@ -1,23 +1,57 @@
-<h1>{{survey.surveyName}}</h1>
 
-<p>This component demonstrates fetching data from the server.</p>
+<p *ngIf="!survey"><em>Loading...</em></p>
 
-<p *ngIf="!forecasts"><em>Loading...</em></p>
+<div *ngIf="survey">
+  <h1>{{survey.surveyName}}</h1>
 
-<table class='table'>
-  <thead>
-    <tr>
-      <th>Date</th>
-      <th>Temp. (C)</th>
-      <th>Temp. (F)</th>
-      <th>Summary</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let question of surveyQuestions">
-      <td>{{ question.questionText }}</td>
-    </tr>
-  </tbody>
-</table>
+  <p>Please take our customer satisfaction survey</p>
 
-<button (click)="createSurvey()">Create a new Survey</button>
+  <div *ngFor="let question of survey.surveyQuestions; index as i">
+    <h3>{{i+1}} {{ question.questionText }}</h3>
+
+    <div [ngSwitch]="question.questionType">
+
+      <div *ngSwitchCase="0">
+        <label>
+          <input type="radio" [name]="question.entityId" value="A" (change)="onSelectionChange(question.entityId, 'A')">
+          <span>A {{question.answerA.answer}}</span>
+        </label>
+
+        <label>
+          <input type="radio" [name]="question.entityId" value="B" (change)="onSelectionChange(question.entityId, 'B')">
+          <span>B {{question.answerB.answer}}</span>
+        </label>
+
+        <label>
+          <input type="radio" [name]="question.entityId" value="C" (change)="onSelectionChange(question.entityId, 'C')">
+          <span>C {{question.answerC.answer}}</span>
+        </label>
+
+        <label>
+          <input type="radio" [name]="question.entityId" value="D" (change)="onSelectionChange(question.entityId, 'D')">
+          <span>D {{question.answerD.answer}}</span>
+        </label>
+      </div>
+
+      <div *ngSwitchCase="1">
+        <p>Multi Select</p>
+      </div>
+
+      <div *ngSwitchCase="2">
+        <div *ngFor='let in of counter(question.scale); let i2 = index'>
+          <input type="radio" [name]="question.entityId" value="{i2+1}" (change)="onSelectionChange(question.entityId, i2+1)">{{i2+1}}
+        </div>
+      </div>
+
+      <div *ngSwitchCase="3">
+        <textarea [(ngModel)]="question.userAnswer" style="width: 50%;">
+
+        </textarea>
+      </div>
+
+    </div>
+
+  </div>
+
+  <button (click)="submitSurvey()">Submit Survey</button>
+</div>

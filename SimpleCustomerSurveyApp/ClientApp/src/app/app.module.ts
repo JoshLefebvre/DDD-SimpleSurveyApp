@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
+import { SurveyResultsComponent } from './survey-results/survey-results.components';
 import { TakeSurveyComponent } from './take-survey/take-survey.component';
 
 @NgModule({
@@ -15,7 +15,7 @@ import { TakeSurveyComponent } from './take-survey/take-survey.component';
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    CounterComponent,
+    SurveyResultsComponent,
     TakeSurveyComponent
   ],
   imports: [
@@ -24,7 +24,7 @@ import { TakeSurveyComponent } from './take-survey/take-survey.component';
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
+      { path: 'survey-results', component: SurveyResultsComponent },
       { path: 'take-survey', component: TakeSurveyComponent },
     ])
   ],
