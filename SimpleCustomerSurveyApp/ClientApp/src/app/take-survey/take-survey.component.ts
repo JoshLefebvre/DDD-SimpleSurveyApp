@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
-import { HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { Survey, QuestionTypes, SurveyQuestionAnswers} from '../survey.types';
 
 @Component({
   selector: 'take-survey',
@@ -8,7 +9,7 @@ import { HttpClient} from '@angular/common/http';
 export class TakeSurveyComponent {
 
   private survey: Survey;
-  public questionTypes: questionTypes;
+  public questionTypes: QuestionTypes;
   private baseUrl: string;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
@@ -47,29 +48,6 @@ export class TakeSurveyComponent {
 
 }
 
-interface Survey {
-  entityId: string,
-  surveyName: string;
-  surveyQuestions: SurveyQuestion[];
-}
 
-interface SurveyQuestion {
-  entityId: string;
-  questionText: string;
-  questionType: questionTypes;
-  userAnswer: string;
-}
-
-interface SurveyQuestionAnswers {
-  questionId: string;
-  answer: string;
-}
-
-export enum questionTypes {
-  ScaleQuestion = 0,
-  TextQuestion = 1,
-  MultiSelectQuestion =2,
-  MultipleChoice = 3
-}
 
 
