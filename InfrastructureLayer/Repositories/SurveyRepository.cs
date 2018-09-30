@@ -35,6 +35,7 @@ namespace InfrastructureLayer
         {
             try
             {
+                //Since we are only allowing 1 survey to be stored for MVP we don't have to query by id
                 return _dbContext.Surveys.Find(_ => true).FirstOrDefault();
             }
             catch (Exception ex)

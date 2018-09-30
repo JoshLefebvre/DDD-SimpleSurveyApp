@@ -15,7 +15,6 @@ export class HomeComponent {
   }
 
   ngOnInit() {
-
     //Create Survey on initialization
     this.http.post(`${this.baseUrl}api/Survey/create-survey`, {}).subscribe(result => {
       let x = result;

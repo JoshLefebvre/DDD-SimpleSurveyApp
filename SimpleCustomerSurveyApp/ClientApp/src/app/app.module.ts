@@ -9,6 +9,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { SurveyResultsComponent } from './survey-results/survey-results.components';
 import { TakeSurveyComponent } from './take-survey/take-survey.component';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { TakeSurveyComponent } from './take-survey/take-survey.component';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'survey-results', component: SurveyResultsComponent },
       { path: 'take-survey', component: TakeSurveyComponent },
-    ])
+    ]),
+    ChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

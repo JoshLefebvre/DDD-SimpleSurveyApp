@@ -4,12 +4,15 @@
 <div *ngIf="survey">
   <h1>{{survey.surveyName}}</h1>
 
-  <p>Please take our customer satisfaction survey</p>
+  <h3>Please take our customer satisfaction survey</h3>
 
-  <div *ngFor="let question of survey.surveyQuestions; index as i">
-    <h3>{{i+1}} {{ question.questionText }}</h3>
+  <div *ngFor="let question of survey.surveyQuestions; index as i" class="panel panel-default">
 
-    <div [ngSwitch]="question.questionType">
+    <div class="panel-heading">
+      <h3>{{i+1}} {{ question.questionText }}</h3>
+    </div>
+
+    <div [ngSwitch]="question.questionType" class="panel-body">
 
       <div *ngSwitchCase="0">
         <label>
@@ -38,15 +41,16 @@
       </div>
 
       <div *ngSwitchCase="2">
-        <div *ngFor='let in of counter(question.scale); let i2 = index'>
-          <input type="radio" [name]="question.entityId" value="{i2+1}" (change)="onSelectionChange(question.entityId, i2+1)">{{i2+1}}
+        <div *ngFor='let in of counter(question.scale); let i2 = index' class="btn-group">
+          <label style="padding:10px;">
+            <input type="radio" [name]="question.entityId" value="{i2+1}" (change)="onSelectionChange(question.entityId, i2+1)">
+            <span>{{i2+1}}</span>
+          </label>
         </div>
       </div>
 
       <div *ngSwitchCase="3">
-        <textarea [(ngModel)]="question.userAnswer" style="width: 50%;">
-
-        </textarea>
+        <textarea [(ngModel)]="question.userAnswer" style="width: 50%;"></textarea>
       </div>
 
     </div>
@@ -54,4 +58,5 @@
   </div>
 
   <button (click)="submitSurvey()">Submit Survey</button>
+  <br/><br/>
 </div>

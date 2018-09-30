@@ -25,17 +25,6 @@ namespace SimpleCustomerSurveyApp
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //Add SQL Server
-            /*services.AddDbContext<SurveyContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-                    sqlServerOptionsAction: sqlOptions =>
-                    {
-                        sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                        /*sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
-                    }
-                )
-            );*/
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             // In production, the Angular files will be served from this directory
@@ -60,7 +49,7 @@ namespace SimpleCustomerSurveyApp
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                //app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
 

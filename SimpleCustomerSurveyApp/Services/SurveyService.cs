@@ -28,10 +28,15 @@ namespace SimpleCustomerSurveyApp.Data
 
         public async Task CreateSurveyAsync()
         {
-            //For MVP we are creating a survey with prepoulated questions
-            var survey = CreateFakeSurvey();
-
-            await _surveryRepository.CreateAsync(survey);
+            //For MVP we are only allowing a single survey to be created (Customer Satisfaction) 
+            //i.e. if a survey already exists in db do not create another one
+            var survey = await GetSurveyAsync("FakeID");
+            if(survey==null)
+            {
+                //Creating a survey with prepoulated questions
+                survey = CreateFakeSurvey();
+                await _surveryRepository.CreateAsync(survey);
+            }
         }
 
         public async Task<Survey> GetSurveyAsync(string id)
