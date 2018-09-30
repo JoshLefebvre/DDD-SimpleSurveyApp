@@ -9,7 +9,7 @@ namespace DomainLayer.SurveyAggregate.QuestionTypes
 {
     public class TextQuestion : SurveyQuestion
     {
-        private readonly List<string> _answers;
+        public List<string> _answers { get; set; }
         public IReadOnlyCollection<string> Answers => _answers;
         
         public TextQuestion(string questionText) : base(questionText, QuestionType.Text)
@@ -17,10 +17,13 @@ namespace DomainLayer.SurveyAggregate.QuestionTypes
             _answers = new List<string>();
         }
 
-        public void AddAnswer(string answer)
+        public override void UpdateAnswer(string answer)
         {
+            //This case shouldn't be happening 
+            //Need to figure out how to store empty list in mongodb
+            if (_answers == null)
+                _answers = new List<string>();
             _answers.Add(answer);
         }
-
     }
 }

@@ -9,7 +9,8 @@ namespace DomainLayer.SurveyAggregate
 {
     public interface ISurveryRepository
     {
-        Task SaveAsync(Survey survey);
-        Task<Survey> GetAsync(int id);
+        Task CreateAsync(Survey survey);
+        Task UpdateAsync(Survey survey);
+        Task<Survey> GetAsync(string id);
     }
 }

@@ -11,10 +11,12 @@ namespace DomainLayer.SurveyAggregate.QuestionTypes
     {
         public int Scale { get; private set; }
 
-        private readonly List<int> _answers;
+        public List<int> _answers { get; set; }
         public IReadOnlyCollection<int> Answers => _answers;
 
-        public ScaleQuestion(string questionText, int scale): base(questionText, QuestionType.Scale)
+
+        public ScaleQuestion(string questionText, int scale)
+            : base(questionText, QuestionType.Scale)
         {
             if (scale > 100 || scale < 0)
                 throw new Exception("Scale must be between 0 and 100");
@@ -23,12 +25,22 @@ namespace DomainLayer.SurveyAggregate.QuestionTypes
             Scale = scale;
         }
 
-        public void AddScaleAnswer(int answer)
+        public override void UpdateAnswer(string answer)
         {
-            if(answer>Scale || answer<Scale)
+            int numAnswer= 0;
+
+            if (!int.TryParse(answer, out numAnswer))
+                throw new Exception("Scale answer must be a digit");
+
+            if (numAnswer > Scale || numAnswer < 0)
                 throw new Exception("Scale anser must be within acceptable");
 
-            _answers.Add(answer);
+            //This case shouldn't be happening 
+            //Need to figure out how to store empty list in mongodb
+            if (_answers == null)
+                _answers = new List<int>();
+
+            _answers.Add(numAnswer);
         }
     }
 }

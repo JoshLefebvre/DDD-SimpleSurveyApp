@@ -16,7 +16,7 @@ namespace DomainLayer.SurveyAggregate.QuestionTypes
         public MultipleChoiceAnswer AnswerC { get; private set; }
         public MultipleChoiceAnswer AnswerD { get; private set; }
 
-        private MultipleChoiceQuestion(){}//Needed for EFCore
+        //private MultipleChoiceQuestion(){}//Needed for EFCore
 
         public MultipleChoiceQuestion(string questionText, string answerA, string answerB, string answerC, string answerD) 
             : base(questionText, QuestionType.MultipleChoice)
@@ -27,10 +27,27 @@ namespace DomainLayer.SurveyAggregate.QuestionTypes
             AnswerD = new MultipleChoiceAnswer(answerD, 0);
         }
 
-        public void IncrementAnswerA() => AnswerA.IncrementCount();
-        public void IncrementAnswerB() => AnswerA.IncrementCount();
-        public void IncrementAnswerC() => AnswerA.IncrementCount();
-        public void IncrementAnswerD() => AnswerA.IncrementCount();
+
+        public override void UpdateAnswer(string answer)
+        {
+            switch(answer)
+            {
+                case "A":
+                    AnswerA.IncrementCount();
+                    break;
+                case "B":
+                    AnswerA.IncrementCount();
+                    break;
+                case "C":
+                    AnswerC.IncrementCount();
+                    break;
+                case "D":
+                    AnswerD.IncrementCount();
+                    break;
+                default:
+                    throw new Exception("Illegal answer");
+            }
+        }
     }
 
     public class MultipleChoiceAnswer

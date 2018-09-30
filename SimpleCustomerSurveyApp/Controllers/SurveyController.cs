@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using DomainLayer.SurveyAggregate;
 using Microsoft.AspNetCore.Mvc;
 using SimpleCustomerSurveyApp.Data;
+using SimpleCustomerSurveyApp.DataTransferObjects;
 
 namespace SimpleCustomerSurveyApp.Controllers
 {
@@ -20,47 +18,28 @@ namespace SimpleCustomerSurveyApp.Controllers
             _surveyService = surveyService;
         }
 
-
-
-        /*private static string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
-        [HttpGet("[action]")]
-        public IEnumerable<WeatherForecast> WeatherForecasts()
-        {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                DateFormatted = DateTime.Now.AddDays(index).ToString("d"),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            });
-        }
-
-        public class WeatherForecast
-        {
-            public string DateFormatted { get; set; }
-            public int TemperatureC { get; set; }
-            public string Summary { get; set; }
-
-            public int TemperatureF
-            {
-                get
-                {
-                    return 32 + (int)(TemperatureC / 0.5556);
-                }
-            }
-        }*/
-
-        [HttpGet("{surveyId:int}")]
-        public async Task<IActionResult> GetSurveyQuestion(int surveyId)
+        [HttpPost("create-survey")]
+        public async Task<IActionResult> CreateSurvey()
         {
             try
             {
-                
-                var survey = await _surveyService.GetSurvey(surveyId);
+                await _surveyService.CreateSurveyAsync();
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("{surveyId:int}")]
+        public async Task<IActionResult> GetSurveyQuestions(string surveyId)
+        {
+            try
+            {
+                var survey = await _surveyService.GetSurveyAsync(surveyId);
+
+                //TODO: Purge answers from survey as they are not needed
 
                 return Ok(survey);
             }
@@ -71,25 +50,11 @@ namespace SimpleCustomerSurveyApp.Controllers
         }
 
         [HttpPost("submit-survey")]
-        public async Task<IActionResult> SubmitSurvey([FromBody] SurveyAnswersDTO surveyAnwers)
+        public async Task<IActionResult> SubmitSurvey([FromBody] SurveyAnswersDTO surveyAnswers)
         {
             try
             {
-                //await _surveyService.PostAnswers();
-                return Ok();
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
-        }
-
-        [HttpPost("create-survey")]
-        public async Task<IActionResult> CreateSurvey()
-        {
-            try
-            {
-                await _surveyService.CreateSurvey();
+                await _surveyService.SubmitSurveyAsync(surveyAnswers);
                 return Ok();
             }
             catch (Exception)

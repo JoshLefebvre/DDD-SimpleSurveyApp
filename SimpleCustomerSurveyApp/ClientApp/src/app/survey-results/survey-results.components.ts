@@ -1,13 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Survey } from '../survey.types';
 
 @Component({
-  selector: 'app-counter-component',
-  templateUrl: './counter.component.html'
+  selector: 'survey-results-component',
+  templateUrl: './survey-results.component.html'
 })
-export class CounterComponent {
-  public currentCount = 0;
+export class SurveyResultsComponent {
+  public survey: Survey;
+  public multipleChoiceQuestions: any[];
+  public textQuestions: any[];
+  public scaleQuestions: any[];
 
-  public incrementCounter() {
-    this.currentCount++;
+  private baseUrl: string;
+
+  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+    this.baseUrl = baseUrl;
+
+    http.get<Survey>(`${baseUrl}api/Survey/0`).subscribe(result => {
+      this.survey = result;
+
+
+    }, error => console.error(error));
   }
+
+
 }

@@ -7,6 +7,6 @@ namespace DomainLayer.SeedWork
     public class Entity
     {
         [BsonId]
-        public ObjectId EntityId { get; set; }
+        public ObjectId EntityId { get; protected set; }
     }
 }

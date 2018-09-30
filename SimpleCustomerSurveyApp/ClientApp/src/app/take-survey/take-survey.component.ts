@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
-import { HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { Survey, QuestionTypes, SurveyQuestionAnswers} from '../survey.types';
 
 @Component({
   selector: 'take-survey',
@@ -7,7 +8,8 @@ import { HttpClient} from '@angular/common/http';
 })
 export class TakeSurveyComponent {
 
-  public survey: Survey;
+  private survey: Survey;
+  public questionTypes: QuestionTypes;
   private baseUrl: string;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
@@ -20,15 +22,32 @@ export class TakeSurveyComponent {
 
   public submitSurvey() {
 
+    let answers: SurveyQuestionAnswers[];
+
+    answers = this.survey.surveyQuestions.map(x => {
+      return {
+        questionId: x.entityId,
+        answer: x.userAnswer,
+      };
+    });
+
+    this.http.post(`${this.baseUrl}api/Survey/submit-survey`, { surveyId: this.survey.entityId, questions: answers}).subscribe(result => {
+      //Navigate to results
+    }, error => console.error(error));
+  }
+
+  public counter(i: number) {
+    return new Array(i);
+  }
+
+  public onSelectionChange(questionId: string, value: string) {
+
+    let question = this.survey.surveyQuestions.find(x => x.entityId === questionId);
+    question.userAnswer = value;
   }
 
 }
 
-interface Survey {
-  surveyName: string;
-  surveyQuestions: SurveyQuestion[];
-}
 
-interface SurveyQuestion {
-  questionText: string;
-}
+
+
