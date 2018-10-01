@@ -16,4 +16,4 @@
  - From this directory run the command "dotnet run". This will automatically run "npm install" amd start the client application along with the server-side .NET Core api
 
 ###### Running from Docker
-	-From the root file run "docker-compose up". ***Not currently working (having issues with npm and exposing proper ports)***
+ - From the root file run "docker-compose up". ***Not currently working (having issues with npm and exposing proper ports)***
